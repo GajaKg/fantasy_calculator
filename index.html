@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sr" lang="sr">
+<head>
+<title>Fantasy index calculator</title>
+<meta http-equiv="Content-Type" content="text/xml; charset=utf-8"/>
+
+<!--
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+-->
+    
+<!-- bootstrap -->
+<!--
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+-->
+<!--
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>    
+-->
+    
+</head>
+<body>
+<div id='wrapper'>
+    
+<header>
+
+</header>
+    
+<section>
+
+<fieldset>
+
+<!-- Form Name -->
+<legend>Unesite tražene informacije</legend>
+
+<!-- Text input-->
+<div class="inputHolder">
+    <label class="inputLabel" for="textinput">Ime i prezime igrača</label>
+    <div class="inputFiled">
+        <input type="text" id="imePrezime" placeholder="" class="infoPlayer">
+    </div><div class="clear"></div>
+</div>      
+
+<!-- Text input-->
+<div class="inputHolder">
+    <label class="inputLabel" for="textinput">Trenutna cena</label>
+    <div class="inputFiled">
+        <input type="number" id="trenutnaCena" placeholder="" class="infoPlayer">
+    </div><div class="clear"></div>
+</div>
+
+<!-- Text input-->
+<div class="inputHolder">
+    <label class="inputLabel" for="textinput">Ukupna vrednost indeksa</label>
+    <div class="inputFiled">
+        <input type="number" id="indeksSum" placeholder="" class="infoPlayer">
+    </div><div class="clear"></div>
+</div>
+
+<!-- Text input-->
+<div class="inputHolder">
+    <label class="inputLabel" for="textinput">Broj odigranih utakmica</label>
+    <div class="inputFiled">
+        <input type="number" id="brojUtakmica" placeholder="" class="infoPlayer">
+    </div><div class="clear"></div>
+</div>
+
+
+<div class="form-group">
+<div class="col-sm-offset-2 col-sm-10">
+  <div class="pull-right">
+    <!--<div class="">resetuj</div>-->
+    <div class="btnCalc" onclick="calculate()">Izračunaj</div>
+  </div>
+</div>
+</div>
+
+</fieldset>
+    
+<style>
+    .player {
+        width: 200px;
+        border: 1px solid blue;
+        float: left;
+    }
+    .dataIndex {
+        float: left;
+        background: yellow;
+        width: 50%;
+        border: red;
+        text-align: center;
+    } 
+    .dataPrice {
+        float: left;
+        background: yellow;
+        width: 50%;
+        border: red;
+        text-align: center;
+    } 
+    .clear {
+        clear: both;
+    }
+    .btnCalc {
+        height: 30px;
+        width: 80px;
+        line-height: 30px;
+        text-align: center;
+        background-color: cornflowerblue;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .inputFiled {
+        float: left;
+    }
+    .inputLabel{
+        float: left;
+        width: 190px;
+    }
+    .inputHolder {
+	   margin: 10px auto;
+    }
+    .infoPlayer {
+        width: 200px;
+    }
+    .playerName {
+        font-weight: bolder;
+        text-align: center;
+        background: lightblue;
+    }
+    #wrapper {
+        margin: 10px;
+    }
+    .dataHeader {
+        float: left;
+        width: 50%;
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
+
+<div id="result">
+
+
+    
+    
+</div>
+</section>
+    
+    
+<aside>
+    
+<div class="container">
+<aside>
+
+    
+</aside>    
+    
+<footer style="clear:both";>
+    
+</footer> 
+    
+</div>    
+    
+    
+<script>
+function calculate() {
+    var output = "";
+    var result = document.getElementById("result");
+    var imePrezime = document.getElementById("imePrezime").value;
+    var trenutnaCena = parseFloat(document.getElementById("trenutnaCena").value);
+    var indeksSum = parseFloat(document.getElementById("indeksSum").value);
+    var brojUtakmica = parseFloat(document.getElementById("brojUtakmica").value);
+    var id = document.getElementById("result").children.length;
+    var siguranRast = true;
+    
+    htmlHeaderPlayer(imePrezime, id);
+
+    for (var indeks = -10; indeks <= 45; indeks++){
+
+        var novaCena = ((indeksSum + indeks) / (brojUtakmica + 1)) * 4;
+            novaCena = Math.ceil(novaCena);
+
+        if (novaCena > 5){
+            var maksPad = trenutnaCena * 0.85;
+            var maksRast = trenutnaCena * 1.15;
+//            var maksPad = Math.round(trenutnaCena * 100) / 100 * 0.85;
+//            var maksRast = Math.round(trenutnaCena * 100) / 100 * 1.15;
+            if (novaCena > maksPad && novaCena < maksRast){
+                htmlIndexData(indeks, novaCena, id);
+                siguranRast = false;
+            } 
+        }
+
+    }
+    
+    if(siguranRast){
+        var divPlayer = document.getElementById("playerInfo"+id);
+        var info = document.createElement("div");
+        info.setAttribute("id", "info"+id);
+        info.innerHTML = "Trazeni igrac ima siguran rast cene od " + maksRast + " kredita.";
+        divPlayer.appendChild(info);
+    }
+
+}
+    
+function htmlHeaderPlayer(playerName, id){
+    
+    var result = document.getElementById("result");
+    var divPlayer = document.createElement("div");
+    divPlayer.setAttribute("class", "player");
+    divPlayer.setAttribute("id", "playerInfo"+id);
+    result.appendChild(divPlayer);
+    
+        var divPlayerName = document.createElement("div");
+        divPlayerName.setAttribute("id", "playerName"); 
+        divPlayerName.setAttribute("class", "playerName"); 
+        divPlayerName.innerHTML = playerName;
+        divPlayer.appendChild(divPlayerName);
+    
+        var headerIndex = document.createElement("div");
+        headerIndex.setAttribute("class", "dataHeader");
+        headerIndex.innerHTML = "Indeks";
+        divPlayer.appendChild(headerIndex);
+    
+        var headerPrice = document.createElement("div");
+        headerPrice.setAttribute("class", "dataHeader");
+        headerPrice.innerHTML = "Nova cena";
+        divPlayer.appendChild(headerPrice);
+    
+        var headerClear = document.createElement("div");
+        headerClear.setAttribute("class", "clear");
+        divPlayer.appendChild(headerClear);
+    
+}
+    
+function htmlIndexData(index, price, id){
+    var divPlayer = document.getElementById("playerInfo"+id);
+    
+    var dataIndex = document.createElement("div");
+    dataIndex.setAttribute("class", "dataIndex");
+    dataIndex.innerHTML = index;
+    divPlayer.appendChild(dataIndex);
+    
+    var dataPrice = document.createElement("div");
+    dataPrice.setAttribute("class", "dataPrice");
+    dataPrice.innerHTML = price;
+    divPlayer.appendChild(dataPrice);
+    
+    
+}
+    
+   
+</script>
+</body>
+</html>
