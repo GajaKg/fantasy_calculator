@@ -69,15 +69,9 @@
 </div>
 
 
-<div class="form-group">
-<div class="col-sm-offset-2 col-sm-10">
-  <div class="pull-right">
-    <!--<div class="">resetuj</div>-->
-    <div class="btnCalc" onclick="calculate()">Izračunaj</div>
-  </div>
-</div>
-</div>
-
+<div class="btnCalc" onclick="calculate()">Izračunaj</div>
+<div class="btnSave" onclick="savePlayers()">Sačuvaj trenutne igrače</div>
+<div class="btnDelete" onclick="deletePlayers()">Izbriši trenutne igrače</div>
 </fieldset>
     
 <style>
@@ -85,17 +79,20 @@
         width: 200px;
         border: 1px solid blue;
         float: left;
+        margin: 10px 5px;
+        height: 450px;
+        overflow: auto;
     }
     .dataIndex {
         float: left;
-        background: yellow;
+/*        background: yellow;*/
         width: 50%;
         border: red;
         text-align: center;
     } 
     .dataPrice {
         float: left;
-        background: yellow;
+/*        background: yellow;*/
         width: 50%;
         border: red;
         text-align: center;
@@ -103,7 +100,8 @@
     .clear {
         clear: both;
     }
-    .btnCalc {
+    .btnCalc, .btnSave, .btnDelete {
+        float: left;
         height: 30px;
         width: 80px;
         line-height: 30px;
@@ -111,6 +109,10 @@
         background-color: cornflowerblue;
         border-radius: 5px;
         cursor: pointer;
+        margin: 0 5px;
+    }
+    .btnSave, .btnDelete {
+        width: 200px;
     }
     .inputFiled {
         float: left;
@@ -139,6 +141,15 @@
         text-align: center;
         font-weight: bold;
     }
+    .orangeZone {
+        background-color: orange;
+    }
+    .redZone {
+        background-color: red;
+    }
+    .greenZone {
+        background-color: forestgreen;
+    }
 </style>
 
 <div id="result">
@@ -166,6 +177,28 @@
     
     
 <script>
+    
+function checkSaved(){
+    var result = document.getElementById("result");
+    var stored = localStorage.getItem("storedPlayers");
+    if (stored != null){
+        result.innerHTML = stored;
+    }
+}
+checkSaved();
+    
+function savePlayers(){
+    var players = document.getElementById("result").innerHTML;
+    localStorage.setItem("storedPlayers", players);
+    alert("Uspešno ste sačuvali tražene igrače.");
+} 
+    
+function deletePlayers(){
+    document.getElementById("result").innerHTML = "";
+    localStorage.removeItem("storedPlayers");
+    alert("Uspešno ste izbrisali tražene igrače.");
+}
+    
 function calculate() {
     var output = "";
     var result = document.getElementById("result");
@@ -189,7 +222,7 @@ function calculate() {
 //            var maksPad = Math.round(trenutnaCena * 100) / 100 * 0.85;
 //            var maksRast = Math.round(trenutnaCena * 100) / 100 * 1.15;
             if (novaCena > maksPad && novaCena < maksRast){
-                htmlIndexData(indeks, novaCena, id);
+                htmlIndexData(indeks, trenutnaCena, novaCena, id);
                 siguranRast = false;
             } 
         }
@@ -236,17 +269,26 @@ function htmlHeaderPlayer(playerName, id){
     
 }
     
-function htmlIndexData(index, price, id){
+function htmlIndexData(index, currPrice, newPrice, id){
     var divPlayer = document.getElementById("playerInfo"+id);
+    var classColor;
     
+    if (currPrice == newPrice){
+        classColor = "orangeZone";
+    } else if (newPrice < currPrice){
+        classColor = "redZone";
+    } else {
+        classColor = "greenZone";
+    }
+        
     var dataIndex = document.createElement("div");
-    dataIndex.setAttribute("class", "dataIndex");
+    dataIndex.setAttribute("class", "dataIndex " + classColor);
     dataIndex.innerHTML = index;
     divPlayer.appendChild(dataIndex);
     
     var dataPrice = document.createElement("div");
-    dataPrice.setAttribute("class", "dataPrice");
-    dataPrice.innerHTML = price;
+    dataPrice.setAttribute("class", "dataPrice " + classColor);
+    dataPrice.innerHTML = newPrice;
     divPlayer.appendChild(dataPrice);
     
     
