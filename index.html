@@ -80,8 +80,14 @@
         border: 1px solid blue;
         float: left;
         margin: 10px 5px;
-        height: 450px;
+    }
+    .indHolder::after{
+        content: "";
+        clear: both;
+    }
+    .indHolder {
         overflow: auto;
+        height: 400px
     }
     .dataIndex {
         float: left;
@@ -131,6 +137,21 @@
         font-weight: bolder;
         text-align: center;
         background: lightblue;
+        position: relative;
+    }
+    .delPlayerBtn {
+        position: absolute;
+        top: -1px;
+        right: 0px;
+        width: 19px;
+        height: 19px;
+        line-height: 19px;
+        color: white;
+        background-color: cornflowerblue;
+        text-align: center;
+    }
+    .delPlayerBtn {
+        cursor: pointer;
     }
     #wrapper {
         margin: 10px;
@@ -183,21 +204,40 @@ function checkSaved(){
     var stored = localStorage.getItem("storedPlayers");
     if (stored != null){
         result.innerHTML = stored;
+    } else {
+        return false;
     }
 }
 checkSaved();
     
 function savePlayers(){
+    
+    localStorage.removeItem("storedPlayers");
+    
     var players = document.getElementById("result").innerHTML;
     localStorage.setItem("storedPlayers", players);
     alert("Uspešno ste sačuvali tražene igrače.");
 } 
     
 function deletePlayers(){
+    
+    var answer = confirm("Da li ste sigurni da želite da obrišete trenutne igrače?");
+    if (!answer) return;
+                        
     document.getElementById("result").innerHTML = "";
     localStorage.removeItem("storedPlayers");
     alert("Uspešno ste izbrisali tražene igrače.");
 }
+    
+function deleteOnePlayer(that){
+    var index = that.id.slice(12);
+    
+    var removePlayer = document.getElementById("playerInfo"+index);
+    removePlayer.parentNode.removeChild(removePlayer);
+    alert("Molimo Vas snimite izmenu ili će igrač ostati prikazan prilikom sledećeg pokretanja.");
+}
+
+
     
 function calculate() {
     var output = "";
@@ -251,6 +291,12 @@ function htmlHeaderPlayer(playerName, id){
         divPlayerName.setAttribute("id", "playerName"); 
         divPlayerName.setAttribute("class", "playerName"); 
         divPlayerName.innerHTML = playerName;
+            var deletePlayer = document.createElement("div");
+            deletePlayer.setAttribute("class", "delPlayerBtn");
+            deletePlayer.setAttribute("id", "delPlayerBtn"+id);
+            deletePlayer.setAttribute("onclick", "deleteOnePlayer(this)");
+            deletePlayer.innerHTML = "x";
+            divPlayerName.appendChild(deletePlayer);
         divPlayer.appendChild(divPlayerName);
     
         var headerIndex = document.createElement("div");
@@ -263,14 +309,21 @@ function htmlHeaderPlayer(playerName, id){
         headerPrice.innerHTML = "Nova cena";
         divPlayer.appendChild(headerPrice);
     
+        
+    
         var headerClear = document.createElement("div");
         headerClear.setAttribute("class", "clear");
         divPlayer.appendChild(headerClear);
     
+        var indexHolder = document.createElement("div");
+        indexHolder.setAttribute("id", "indHol"+id);
+        indexHolder.setAttribute("class", "indHolder");
+        divPlayer.appendChild(indexHolder);
+    
 }
     
 function htmlIndexData(index, currPrice, newPrice, id){
-    var divPlayer = document.getElementById("playerInfo"+id);
+    var indexHolder = document.getElementById("indHol"+id);
     var classColor;
     
     if (currPrice == newPrice){
@@ -284,12 +337,12 @@ function htmlIndexData(index, currPrice, newPrice, id){
     var dataIndex = document.createElement("div");
     dataIndex.setAttribute("class", "dataIndex " + classColor);
     dataIndex.innerHTML = index;
-    divPlayer.appendChild(dataIndex);
+    indexHolder.appendChild(dataIndex);
     
     var dataPrice = document.createElement("div");
     dataPrice.setAttribute("class", "dataPrice " + classColor);
     dataPrice.innerHTML = newPrice;
-    divPlayer.appendChild(dataPrice);
+    indexHolder.appendChild(dataPrice);
     
     
 }
