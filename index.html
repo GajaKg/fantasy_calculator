@@ -30,7 +30,7 @@
 </header>
     
 <section>
-
+<div class="title">INDEX SOKOĆALO</div>
 <fieldset>
 
 <!-- Form Name -->
@@ -247,7 +247,12 @@ function calculate() {
     var brojUtakmica = parseFloat(document.getElementById("brojUtakmica").value);
     var id = document.getElementById("result").children.length;
     var siguranRast = true;
-    
+//    alert(typeof trenutnaCena);
+    if (imePrezime == "" || trenutnaCena == "NaN" || indeksSum == "NaN" || brojUtakmica == "NaN"){
+        alert("Unesite potrebne podatke.");
+        return;
+    }
+ 
     htmlHeaderPlayer(imePrezime, id);
 
     for (var indeks = -10; indeks <= 45; indeks++){
