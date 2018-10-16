@@ -252,7 +252,7 @@ function deleteOnePlayer(that){
 function indexList(){
     var players = document.getElementsByClassName("player");
     var list = [];
-    for (var p in players){
+    for (var p=0; p < players.length; p++){
         var pID = players[p].id;
         var ind = pID.split("-")[1];
         list.push(ind);
