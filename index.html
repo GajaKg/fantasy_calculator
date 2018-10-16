@@ -292,8 +292,8 @@ function calculate() {
     var id = document.getElementById("result").children.length;
     
     if (id != 0) {
-	var indexList = indexList();
-	var max = findMax(indexList);
+	var playerIndexes = indexList();
+	var max = findMax(playerIndexes);
         for (var i=1; i <= max+1; i++){
             if (!idExist(i)){
                 id = i;
