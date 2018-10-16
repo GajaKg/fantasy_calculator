@@ -249,7 +249,16 @@ function deleteOnePlayer(that){
     removePlayer.parentNode.removeChild(removePlayer);
 }
 
-
+function findFreeID(id){
+    var players = document.getElementsByClassName("player");
+    for (var p in players){
+        var pID = players[p].id;
+        var ind = id.split("-")[1];
+        if (ind != id){
+            return id;
+        }
+    }
+}
     
 function calculate() {
     var output = "";
@@ -258,7 +267,9 @@ function calculate() {
     var trenutnaCena = parseFloat(document.getElementById("trenutnaCena").value);
     var indeksSum = parseFloat(document.getElementById("indeksSum").value);
     var brojUtakmica = parseFloat(document.getElementById("brojUtakmica").value);
-    var id = document.getElementById("result").children.length - 1;
+    var id = document.getElementById("result").children.length;
+    if (id != 0) id = findFreeID(id);
+	
     var siguranRast = true;
 //    alert(typeof trenutnaCena);
     if (imePrezime == "" || trenutnaCena == "NaN" || indeksSum == "NaN" || brojUtakmica == "NaN"){
@@ -302,7 +313,7 @@ function htmlHeaderPlayer(playerName, id, currCost){
     var result = document.getElementById("result");
     var divPlayer = document.createElement("div");
     divPlayer.setAttribute("class", "player");
-    divPlayer.setAttribute("id", "playerInfo"+id);
+    divPlayer.setAttribute("id", "playerInfo-"+id);
     result.appendChild(divPlayer);
     
         var divPlayerName = document.createElement("div");
