@@ -253,7 +253,7 @@ function findFreeID(id){
     var players = document.getElementsByClassName("player");
     for (var p in players){
         var pID = players[p].id;
-        var ind = id.split("-")[1];
+        var ind = pID.split("-")[1];
         if (ind != id){
             return id;
         }
