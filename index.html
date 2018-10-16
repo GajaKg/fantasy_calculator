@@ -245,7 +245,7 @@ function deletePlayers(){
 function deleteOnePlayer(that){
     var index = that.id.slice(12);
     
-    var removePlayer = document.getElementById("playerInfo"+index);
+    var removePlayer = document.getElementById("playerInfo-"+index);
     removePlayer.parentNode.removeChild(removePlayer);
 }
 
