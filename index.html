@@ -274,11 +274,10 @@ function idExist(id){
     var players = document.getElementsByClassName("player");
     for (var p in players){
 	    
-	if (players[p] == undefined) return false;    
-	    
         var pID = players[p].id;
-        var ind = pID.split("-")[1];
+	if (pID == undefined) return false;  
 	    
+        var ind = pID.split("-")[1];
         if (ind == id) return true;
 	    
     }
