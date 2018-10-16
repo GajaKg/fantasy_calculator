@@ -249,15 +249,37 @@ function deleteOnePlayer(that){
     removePlayer.parentNode.removeChild(removePlayer);
 }
 
-function findFreeID(id){
+function indexList(){
+    var players = document.getElementsByClassName("player");
+    var list = [];
+    for (var p in players){
+        var pID = players[p].id;
+        var ind = pID.split("-")[1];
+        list.push(ind);
+    }
+    return list;
+}	
+
+function findMax(array){
+    var max = array[0];
+    for (var i in array){
+        if (array[i] > max){
+            max = array[i];
+        }
+    }
+    return max;
+}
+	
+function idExist(id){
     var players = document.getElementsByClassName("player");
     for (var p in players){
         var pID = players[p].id;
         var ind = pID.split("-")[1];
-        if (ind != id){
-            return id;
+        if (ind == id){
+            return true;
         }
     }
+    return false;
 }
     
 function calculate() {
@@ -268,7 +290,17 @@ function calculate() {
     var indeksSum = parseFloat(document.getElementById("indeksSum").value);
     var brojUtakmica = parseFloat(document.getElementById("brojUtakmica").value);
     var id = document.getElementById("result").children.length;
-    if (id != 0) id = findFreeID(id);
+    
+    if (id != 0) {
+	var indexList = indexList();
+	var max = findMax(indexList);
+        for (var i=1; i <= max+1; i++){
+            if (!idExist(i)){
+                id = i;
+                break;
+            }
+        }
+    }
 	
     var siguranRast = true;
 //    alert(typeof trenutnaCena);
