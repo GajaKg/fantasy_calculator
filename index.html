@@ -180,6 +180,10 @@
         background-color: green;
 	padding: 10px 3px;
     }
+    .playerCurrCost {
+	background-color: lightgreen;
+	    font-weight: bold;
+    }
 </style>
 
 <div id="result">
@@ -262,7 +266,7 @@ function calculate() {
         return;
     }
  
-    htmlHeaderPlayer(imePrezime, id);
+    htmlHeaderPlayer(imePrezime, id, trenutnaCena);
 
     for (var indeks = -10; indeks <= 45; indeks++){
 
@@ -293,7 +297,7 @@ function calculate() {
 
 }
     
-function htmlHeaderPlayer(playerName, id){
+function htmlHeaderPlayer(playerName, id, currCost){
     
     var result = document.getElementById("result");
     var divPlayer = document.createElement("div");
@@ -302,7 +306,7 @@ function htmlHeaderPlayer(playerName, id){
     result.appendChild(divPlayer);
     
         var divPlayerName = document.createElement("div");
-        divPlayerName.setAttribute("id", "playerName"); 
+        divPlayerName.setAttribute("id", "playerName"+id); 
         divPlayerName.setAttribute("class", "playerName"); 
         divPlayerName.innerHTML = playerName;
             var deletePlayer = document.createElement("div");
@@ -313,6 +317,11 @@ function htmlHeaderPlayer(playerName, id){
             divPlayerName.appendChild(deletePlayer);
         divPlayer.appendChild(divPlayerName);
     
+        var divPlayerCost = document.createElement("div");
+        divPlayerCost.setAttribute("class", "playerCurrCost"); 
+        divPlayerCost.innerHTML = "Trenutna cena: " + currCost;
+        divPlayer.appendChild(divPlayerCost);
+	
         var headerIndex = document.createElement("div");
         headerIndex.setAttribute("class", "dataHeader");
         headerIndex.innerHTML = "Indeks";
