@@ -74,12 +74,17 @@
 <div class="btnDelete" onclick="deletePlayers()">Izbriši trenutne igrače</div>
 </fieldset>
     
-<style>
+<style> 
+  #result {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(200px, 1fr)); 
+    grid-gap: 10px;
+}
     .player {
-        width: 200px;
+        //width: 200px;
         border: 1px solid blue;
-        float: left;
-        margin: 10px 5px;
+        //float: left;
+        //margin: 10px 5px;
     }
     .indHolder::after{
         content: "";
@@ -87,7 +92,7 @@
     }
     .indHolder {
         overflow: auto;
-        height: 400px;
+        // height: 400px;
 	color: white;
 	font-weight: bold;
     }
@@ -289,8 +294,9 @@ function calculate() {
     var result = document.getElementById("result");
     var imePrezime = document.getElementById("imePrezime").value;
     var trenutnaCena = parseFloat(document.getElementById("trenutnaCena").value);
-    var indeksSum = parseFloat(document.getElementById("indeksSum").value);
+    var averageIndex = parseFloat(document.getElementById("indeksSum").value);
     var brojUtakmica = parseFloat(document.getElementById("brojUtakmica").value);
+    var indeksSum = Math.round(averageIndex * brojUtakmica);
     var id = document.getElementById("result").children.length;
     
     if (id != 0) {
